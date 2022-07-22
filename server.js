@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
 server = require('http').createServer(app),
+const port = process.env.PORT || 3000
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
-var server = server.listen(3000, function () {
+var server = server.listen(port, function () {
     console.log("Server is running on http://localhost:3000");
 });
 
