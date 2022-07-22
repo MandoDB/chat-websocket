@@ -33,6 +33,8 @@ io.on('connection', function (socket) {
         }
 
         var messageUser = message.message
+        
+        if(messageUser.length < 0) return;
 
         for (var i = 0; i < codeCharacter.length; i++) {
             if (message.message.includes(codeCharacter[i])) {
