@@ -6,7 +6,7 @@ app.get("/", function (req, res) {
 });
 
 var server = server.listen((process.env.PORT || 5000), function () {
-    console.log("Server is running on http://localhost:3000");
+    console.log("Server is running on http://localhost:5000");
 });
 
 //static stylesheets
@@ -26,7 +26,24 @@ io.on('connection', function (socket) {
 
     });
     socket.on('newMessage', function(message, user) {
-        socket.emit("messageSelf", message);
-        socket.broadcast.emit("messageOut", message, me);
+        var codeCharacter = ["{", "}", "[", "]", "-", "*", "/", "|", "~", "@", "`", "\"", "'", "\\", ">", "<"];
+
+        var message = {
+            message: message.message,
+        }
+
+        var messageUser = message.message
+
+        for (var i = 0; i < codeCharacter.length; i++) {
+            if (message.message.includes(codeCharacter[i])) {
+                message.message = messageUser.replace(/./g, "*");
+              socket.emit("messageSelf", message);
+              socket.broadcast.emit("messageOut", message, me);
+              break;
+            } else if (i == codeCharacter.length - 1) {
+                socket.emit("messageSelf", message);
+                socket.broadcast.emit("messageOut", message, me);
+            }
+          }
     });
 })
